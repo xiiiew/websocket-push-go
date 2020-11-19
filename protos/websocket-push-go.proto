@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto;
+
+// push服务
+service WsPush {
+    // 推送到频道
+    rpc PushCh (PushChRequest) returns (PushChReply) {}
+    // 推送给所有用户
+    rpc PushAll (PushAllRequest) returns (PushAllReply) {}
+}
+
+message PushChRequest {
+    string ch = 1;
+    bytes message = 2;
+}
+
+message PushChReply {
+    bytes message = 1;
+}
+
+message PushAllRequest {
+    bytes message = 1;
+}
+
+message PushAllReply {
+    bytes message = 1;
+}
