@@ -67,8 +67,8 @@ func (b *bucket) SubscribeCh(chName string, conn *WsConnection) {
 
 // 取消订阅
 func (b *bucket) UnsubscribeCh(chName string, conn *WsConnection) {
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	//b.mu.Lock()
+	//defer b.mu.Unlock()
 
 	b.chMap[chName].Unsubscribe(conn)
 
@@ -80,8 +80,8 @@ func (b *bucket) UnsubscribeCh(chName string, conn *WsConnection) {
 
 // 取消订阅所有频道
 func (b *bucket) UnsubscribeAllCh(conn *WsConnection) {
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	//b.mu.Lock()
+	//defer b.mu.Unlock()
 
 	for _, ch := range b.chMap {
 		ch.Unsubscribe(conn)
