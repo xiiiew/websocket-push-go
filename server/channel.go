@@ -1,8 +1,8 @@
 package server
 
 import (
-	"sync"
 	"github.com/xiiiew/websocket-push-go/common"
+	"sync"
 )
 
 // 频道
@@ -30,6 +30,11 @@ func (c *Channel) Subscribe(conn *WsConnection) {
 
 // 取消订阅频道
 func (c *Channel) Unsubscribe(conn *WsConnection) {
+	// 频道不存在
+	if c == nil {
+		return
+	}
+
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -38,6 +43,10 @@ func (c *Channel) Unsubscribe(conn *WsConnection) {
 
 // 频道中用户数
 func (c *Channel) Count() int {
+	// 频道不存在
+	if c == nil {
+		return 0
+	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

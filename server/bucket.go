@@ -2,8 +2,8 @@ package server
 
 import (
 	"errors"
-	"sync"
 	"github.com/xiiiew/websocket-push-go/common"
+	"sync"
 )
 
 // 频道桶
@@ -42,12 +42,11 @@ func (b *bucket) AddConn(conn *WsConnection) {
 
 // 删除连接
 func (b *bucket) DelConn(conn *WsConnection) {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
 	// 删除所有频道中连接
 	b.UnsubscribeAllCh(conn)
 
+	b.mu.Lock()
+	defer b.mu.Unlock()
 	delete(b.connMap, conn.connId)
 }
 
@@ -67,8 +66,8 @@ func (b *bucket) SubscribeCh(chName string, conn *WsConnection) {
 
 // 取消订阅
 func (b *bucket) UnsubscribeCh(chName string, conn *WsConnection) {
-	//b.mu.Lock()
-	//defer b.mu.Unlock()
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
 	b.chMap[chName].Unsubscribe(conn)
 
@@ -80,8 +79,8 @@ func (b *bucket) UnsubscribeCh(chName string, conn *WsConnection) {
 
 // 取消订阅所有频道
 func (b *bucket) UnsubscribeAllCh(conn *WsConnection) {
-	//b.mu.Lock()
-	//defer b.mu.Unlock()
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
 	for _, ch := range b.chMap {
 		ch.Unsubscribe(conn)
@@ -103,8 +102,8 @@ func (b *bucket) PushOne(connId uint64, wsMsg *common.WsMessage) error {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	conn,ok:= b.connMap[connId]
-	if !ok{
+	conn, ok := b.connMap[connId]
+	if !ok {
 		return errors.New("connection not found")
 	}
 
